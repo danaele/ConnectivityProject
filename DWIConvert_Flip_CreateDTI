@@ -1,0 +1,21 @@
+#!/usr/bin/env tcsh
+
+
+echo "Start ..."
+echo "DWIConvert --inputVolume data.nii.gz --conversionMode FSLToNrrd --inputBValues bvals --inputBVectors bvecs --transposeInputBVectors --outputVolume data_newspace.nhdr"
+DWIConvert --inputVolume data.nii.gz --conversionMode FSLToNrrd --inputBValues bvals --inputBVectors bvecs --transposeInputBVectors --outputVolume data_newspace.nhdr
+echo "Done!"
+
+echo "Change orientation to be on the same space as T1w image :"
+echo "bin_subst.pl '0,1.25,0' '0,-1.25,0' data_newspace.nhdr"
+bin_subst.pl "0,1.25,0" "0,-1.25,0" data_newspace.nhdr
+echo "bin_subst.pl '0,1,0' '0,-1,0' data_newspace.nhdr"
+bin_subst.pl "0,1,0" "0,-1,0" data_newspace.nhdr
+
+#or create a program with getline() if getline == space directions: none (1.25,0,0) (0,1.25,0) (0,0,1.25) -> change 
+#                                      getline == measurement frame: (1,0,0) (0,1,0) (0,0,1)  -> change
+
+
+echo "CreateDTIImages.script data_newspace.nhdr"
+CreateDTIImages.script data_newspace.nhdr
+echo "Done!"

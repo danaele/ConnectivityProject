@@ -1,0 +1,171 @@
+#!/bin/sh
+
+#All steps after bedpostx to obtain a connectivity matrix with probtracx2
+
+#Define path 
+export FREESURFER_RESULT_DIR=/Human/HumanConnectome/10unrelatedSubjects_preproc/105115_probtrackx/Structural_preproc_extented/105115/T1w/105115
+export BEDPOSTX_RESULT_DIR=/Human/HumanConnectome/10unrelatedSubjects_preproc/105115_probtrackx/Diffusion.bedpostX
+export DIFFUSION_DIR=/Human/HumanConnectome/10unrelatedSubjects_preproc/105115_probtrackx/Diffusion
+
+#freesurfer & FSL path
+export FREESURFER_HOME=/NIRAL/work/danaele/Libraries/freesurfeur_v5.3/freesurfer
+export FSL_DIR=/tools/FSL/fsl-5.0.8/fsl
+
+##### Structural constraints ######
+echo "Structural constraints"
+if [ ! -d $FREESURFER_RESULT_DIR/anat ]
+then
+   mkdir -p $FREESURFER_RESULT_DIR/anat 
+fi
+  
+  #Seed space
+if [ -f $FREESURFER_RESULT_DIR/anat/orig.nii.gz ]; then
+   echo "File $FREESURFER_RESULT_DIR/anat/orig.nii.gz already exists"
+else
+   echo "mris_convert : orig.mgz to nifti"
+   $FREESURFER_HOME/bin/mri_convert  $FREESURFER_RESULT_DIR/mri/orig.mgz $FREESURFER_RESULT_DIR/anat/orig.nii.gz     
+fi
+
+  #Diffusion space
+if [ -f $FREESURFER_RESULT_DIR/anat/brain.nii.gz ]; then
+   echo "File $FREESURFER_RESULT_DIR/anat/brain.nii.gz already exists"
+else
+   echo "mris_convert : brain.mgz to nifti"
+  $FREESURFER_HOME/bin/mri_convert  $FREESURFER_RESULT_DIR/mri/brain.mgz $FREESURFER_RESULT_DIR/anat/brain.nii.gz 
+fi
+
+  #Ventricules
+if [ -f $FREESURFER_RESULT_DIR/anat/ventricles.nii.gz ]; then
+   echo "File $FREESURFER_RESULT_DIR/anat/ventricles.nii.gz already exists"
+else
+   echo "mri_binarize : ventricles.nii.gz "
+   $FREESURFER_HOME/bin/mri_binarize --i $FREESURFER_RESULT_DIR/mri/aparc+aseg.mgz --ventricles --o $FREESURFER_RESULT_DIR/anat/ventricles.nii.gz
+fi
+
+ #WM Left
+if [ -f $FREESURFER_RESULT_DIR/anat/wm.lh.nii.gz ]; then
+   echo "File $FREESURFER_RESULT_DIR/anat/wm.lh.nii.gz already exists"
+else
+  echo "mri_binarize : wm.lh.nii.gz"
+  $FREESURFER_HOME/bin/mri_binarize --i $FREESURFER_RESULT_DIR/mri/aparc+aseg.mgz --match 2 --o $FREESURFER_RESULT_DIR/anat/wm.lh.nii.gz
+fi 
+  #WM Right
+if [ -f $FREESURFER_RESULT_DIR/anat/wm.rh.nii.gz ]; then
+   echo "File $FREESURFER_RESULT_DIR/anat/wm.rh.nii.gz already exists"
+else
+    echo "mri_binarize : wm.rh.nii.gz"
+    $FREESURFER_HOME/bin/mri_binarize --i $FREESURFER_RESULT_DIR/mri/aparc+aseg.mgz --match 41 --o $FREESURFER_RESULT_DIR/anat/wm.rh.nii.gz
+fi
+
+  # Put binarized wm filenames into txt file
+if [ -f $FREESURFER_RESULT_DIR/waypoints.txt ]; then
+   echo " File waypoints.txt already exists"
+else  
+  echo "Create waypoints.txt.."
+  ls -1 $FREESURFER_RESULT_DIR/anat/wm* > $FREESURFER_RESULT_DIR/waypoints.txt
+  # also copy over label files & white surfaces
+  rsync $FREESURFER_RESULT_DIR/label/*.label $FREESURFER_RESULT_DIR/label/
+  rsync $FREESURFER_RESULT_DIR/surf/{l,r}h.white $FREESURFER_RESULT_DIR/surf/
+fi
+
+###### Registration ###### 
+#Obtain xfm matrix transformation between seedspace & structuralspace
+if [ -f $FREESURFER_RESULT_DIR/output_flirt.mat ]; then
+   echo "File $FREESURFER_RESULT_DIR/output_flirt.mat already exists - Registration already done ! "
+else
+   echo " Start Registration ..."
+   $FSL_DIR/bin/flirt -in $FREESURFER_RESULT_DIR/anat/brain.nii.gz -ref $DIFFUSION_DIR/data.nii.gz -out $FREESURFER_RESULT_DIR/output_flirt -omat $FREESURFER_RESULT_DIR/output_flirt.mat -bins 256 -cost corratio -searchrx 0 0 -searchry 0 0 -searchrz 0 0 -dof 6  -interp trilinear
+   echo "Registration done !  "
+fi
+
+###### Create seeds list ######
+  #Annotation 2009 atlas to Label
+export SUBJECTS_DIR=/Human/HumanConnectome/10unrelatedSubjects_preproc/105115_probtrackx/Structural_preproc_extented/105115/T1w
+if [ ! -d $FREESURFER_RESULT_DIR/labels ]; then
+  echo "Start annotation2label ..."
+  $FREESURFER_HOME/bin/mri_annotation2label --subject 105115 \
+    --hemi lh \
+    --annotation $FREESURFER_RESULT_DIR/label/lh.aparc.a2009s.annot \
+    --outdir $FREESURFER_RESULT_DIR/labels \
+    --surface white
+  $FREESURFER_HOME/bin/mri_annotation2label --subject 105115\
+    --hemi rh \
+    --annotation $FREESURFER_RESULT_DIR/label/rh.aparc.a2009s.annot \
+    --outdir $FREESURFER_RESULT_DIR/labels \
+    --surface white
+  echo "annotation2label done!"
+else
+  echo "Labels already created"
+fi
+  
+
+###### Generating Seeds ##########
+  #Label to Volume 
+seed_list=seeds.txt
+if [ -f $FREESURFER_RESULT_DIR/$seed_list ]; then
+  echo "File $FREESURFER_RESULT_DIR/$seed_list already exists"
+else
+  echo "Start generating seeds (label2volume)"
+  
+  for hemi in {lh,rh}
+  do
+    for lab in `cat $FREESURFER_RESULT_DIR/label_order.txt`
+    do
+     label=$FREESURFER_RESULT_DIR/labels/$hemi.$lab.label
+     vol=${label/%.label/.nii.gz}
+     echo converting $label to $vol
+     $FREESURFER_HOME/bin/mri_label2vol --label $label --temp $FREESURFER_RESULT_DIR/anat/orig.nii.gz --o $vol --identity --fillthresh 0.5 
+     echo $vol >> $FREESURFER_RESULT_DIR/$seed_list
+    done
+  done
+  echo "Generating seeds done !"
+fi
+
+
+
+####### Tractography with probtrackx2 #######
+  # labels tested : labels/lh.G_and_S_cingul-Ant.nii.gz
+
+for hemi in {lh,rh}
+  do
+    for lab in `cat $FREESURFER_RESULT_DIR/label_order.txt`
+    do
+    seed=$FREESURFER_RESULT_DIR/labels/$hemi.$lab.nii.gz
+    if [ ! -f $FREESURFER_RESULT_DIR/results/$hemi.$lab.nii.gz.probtrackx2/matrix_seeds_to_all_targets ]; then
+    echo "Start probtrackx2 for seed : $hemi.$lab.nii.gz"
+    probtrackx2 -x $seed   \
+    -s $BEDPOSTX_RESULT_DIR/merged \
+    -m $DIFFUSION_DIR/nodif_brain_mask\
+    -l \
+    --usef \
+    --s2tastext \
+    --os2t \
+    --onewaycondition \
+    -c 0.2 \
+    -S 2000 \
+    --steplength=0.5 \
+    -P 5000 \
+    --fibthresh=0.01 \
+    --distthresh=0.0 \
+    --sampvox=0.0 \
+    --xfm=$FREESURFER_RESULT_DIR/output_flirt.mat \
+    --avoid=$FREESURFER_RESULT_DIR/anat/ventricles.nii.gz \
+    --seedref=$FREESURFER_RESULT_DIR/anat/orig.nii.gz \
+    --forcedir \
+    --opd \
+    -V 1 \
+    --omatrix1 \
+    --dir=results/$hemi.$lab.nii.gz.probtrackx2/ \
+    --waypoints=$FREESURFER_RESULT_DIR/waypoints.txt\
+    --waycond='OR' \
+    --targetmasks=$FREESURFER_RESULT_DIR/seeds.txt
+    else
+      echo "Probtrackx2 for seed : $hemi.$lab.nii.gz already done !"   
+    fi 
+    done
+ done
+
+echo "Probtrackx2 done !"
+
+
+

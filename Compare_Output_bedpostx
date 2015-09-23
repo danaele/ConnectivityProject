@@ -1,0 +1,67 @@
+#!/bin/sh
+
+subject_bedpostx_dir1=$1
+subject_bedpostx_dir2=$2
+
+echo "Compare all bedpostx outputs, subject1 : $subject_bedpostx_dir1, subject2 : $subject_bedpostx_dir2  "
+
+echo "dyads1.nii.gz :" 
+/NIRAL/work/danaele/ExercicesTuto/CTest-exercices/CompareFiles-build/CompareFiles $subject_bedpostx_dir1/dyads1.nii.gz $subject_bedpostx_dir2/dyads1.nii.gz
+
+echo "dyads1_dispersion.nii.gz :" 
+/NIRAL/work/danaele/ExercicesTuto/CTest-exercices/CompareFiles-build/CompareFiles $subject_bedpostx_dir1/dyads1_dispersion.nii.gz $subject_bedpostx_dir2/dyads1_dispersion.nii.gz
+
+echo "dyads2.nii.gz :" 
+/NIRAL/work/danaele/ExercicesTuto/CTest-exercices/CompareFiles-build/CompareFiles $subject_bedpostx_dir1/dyads2.nii.gz $subject_bedpostx_dir2/dyads2.nii.gz
+
+echo "dyads2_dispersion.nii.gz :" 
+/NIRAL/work/danaele/ExercicesTuto/CTest-exercices/CompareFiles-build/CompareFiles $subject_bedpostx_dir1/dyads2_dispersion.nii.gz $subject_bedpostx_dir2/dyads2_dispersion.nii.gz
+
+echo "dyads2_thr0.05.nii.gz :" 
+/NIRAL/work/danaele/ExercicesTuto/CTest-exercices/CompareFiles-build/CompareFiles $subject_bedpostx_dir1/dyads2_dispersion.nii.gz $subject_bedpostx_dir2/dyads2_dispersion.nii.gz
+echo "mean_dsamples.nii.gz :"
+/NIRAL/work/danaele/ExercicesTuto/CTest-exercices/CompareFiles-build/CompareFiles $subject_bedpostx_dir1/mean_dsamples.nii.gz $subject_bedpostx_dir2/mean_dsamples.nii.gz
+
+echo "mean_f1samples.nii.gz :"
+/NIRAL/work/danaele/ExercicesTuto/CTest-exercices/CompareFiles-build/CompareFiles $subject_bedpostx_dir1/mean_f1samples.nii.gz $subject_bedpostx_dir2/mean_f1samples.nii.gz
+
+echo "mean_f2samples.nii.gz :"
+/NIRAL/work/danaele/ExercicesTuto/CTest-exercices/CompareFiles-build/CompareFiles $subject_bedpostx_dir1/mean_f2samples.nii.gz $subject_bedpostx_dir2/mean_f2samples.nii.gz
+
+echo "mean_fsumsamples.nii.gz :"
+/NIRAL/work/danaele/ExercicesTuto/CTest-exercices/CompareFiles-build/CompareFiles $subject_bedpostx_dir1/mean_fsumsamples.nii.gz $subject_bedpostx_dir2/mean_fsumsamples.nii.gz
+
+echo "mean_ph1samples.nii.gz :"
+/NIRAL/work/danaele/ExercicesTuto/CTest-exercices/CompareFiles-build/CompareFiles $subject_bedpostx_dir1/mean_ph1samples.nii.gz $subject_bedpostx_dir2/mean_ph1samples.nii.gz
+
+echo "mean_ph2samples.nii.gz :"
+/NIRAL/work/danaele/ExercicesTuto/CTest-exercices/CompareFiles-build/CompareFiles $subject_bedpostx_dir1/mean_ph2samples.nii.gz $subject_bedpostx_dir2/mean_ph2samples.nii.gz
+
+echo "mean_S0samples.nii.gz :"
+/NIRAL/work/danaele/ExercicesTuto/CTest-exercices/CompareFiles-build/CompareFiles $subject_bedpostx_dir1/mean_S0samples.nii.gz $subject_bedpostx_dir2/mean_S0samples.nii.gz
+
+echo "mean_th1samples.nii.gz :"
+/NIRAL/work/danaele/ExercicesTuto/CTest-exercices/CompareFiles-build/CompareFiles $subject_bedpostx_dir1/mean_th1samples.nii.gz $subject_bedpostx_dir2/mean_th1samples.nii.gz
+
+echo "mean_th2samples.nii.gz :"
+/NIRAL/work/danaele/ExercicesTuto/CTest-exercices/CompareFiles-build/CompareFiles $subject_bedpostx_dir1/mean_th2samples.nii.gz $subject_bedpostx_dir2/mean_th2samples.nii.gz
+
+echo "merged_f1samples.nii.gz :"
+/NIRAL/work/danaele/ExercicesTuto/CTest-exercices/CompareFiles-build/CompareFiles $subject_bedpostx_dir1/merged_f1samples.nii.gz $subject_bedpostx_dir2/merged_f1samples.nii.gz
+
+echo "merged_f2samples.nii.gz :"
+/NIRAL/work/danaele/ExercicesTuto/CTest-exercices/CompareFiles-build/CompareFiles $subject_bedpostx_dir1/merged_f2samples.nii.gz $subject_bedpostx_dir2/merged_f2samples.nii.gz
+
+echo "merged_ph1samples.nii.gz :"
+/NIRAL/work/danaele/ExercicesTuto/CTest-exercices/CompareFiles-build/CompareFiles $subject_bedpostx_dir1/merged_ph1samples.nii.gz $subject_bedpostx_dir2/merged_ph1samples.nii.gz
+
+echo "merged_ph2samples.nii.gz :"
+/NIRAL/work/danaele/ExercicesTuto/CTest-exercices/CompareFiles-build/CompareFiles $subject_bedpostx_dir1/merged_ph2samples.nii.gz $subject_bedpostx_dir2/merged_ph2samples.nii.gz
+
+echo "merged_th1samples.nii.gz :"
+/NIRAL/work/danaele/ExercicesTuto/CTest-exercices/CompareFiles-build/CompareFiles $subject_bedpostx_dir1/merged_th1samples.nii.gz $subject_bedpostx_dir2/merged_th1samples.nii.gz
+
+echo "merged_th2samples.nii.gz :"
+/NIRAL/work/danaele/ExercicesTuto/CTest-exercices/CompareFiles-build/CompareFiles $subject_bedpostx_dir1/merged_th2samples.nii.gz $subject_bedpostx_dir2/merged_th2samples.nii.gz
+
+

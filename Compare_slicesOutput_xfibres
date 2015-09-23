@@ -1,0 +1,42 @@
+#!/usr/bin/env tcsh
+
+set subject_dir=100307
+set dir_data1=Diffusion.bedpostX
+set dir_data2=Diffusion_copy.bedpostX
+set slice=0077
+
+echo "Compare all xfibres outputs from a slice, subject : $subject_dir slice : $slice"
+echo "dyads1.nii.gz :"
+/NIRAL/work/danaele/ExercicesTuto/CTest-exercices/CompareFiles-build/CompareFiles /Human/HumanConnectome/10unrelatedSubjects_preproc/$subject_dir/Diffusion_preproc/T1w/$dir_data1/diff_slices/data_slice_$slice/dyads1.nii.gz /Human/HumanConnectome/10unrelatedSubjects_preproc/$subject_dir/Diffusion_preproc/T1w/$dir_data2/diff_slices/data_slice_$slice/dyads1.nii.gz
+echo "dyads2.nii.gz :"
+/NIRAL/work/danaele/ExercicesTuto/CTest-exercices/CompareFiles-build/CompareFiles /Human/HumanConnectome/10unrelatedSubjects_preproc/$subject_dir/Diffusion_preproc/T1w/$dir_data1/diff_slices/data_slice_$slice/dyads2.nii.gz /Human/HumanConnectome/10unrelatedSubjects_preproc/$subject_dir/Diffusion_preproc/T1w/$dir_data2/diff_slices/data_slice_$slice/dyads2.nii.gz
+
+echo "f1samples.nii.gz :"
+/NIRAL/work/danaele/ExercicesTuto/CTest-exercices/CompareFiles-build/CompareFiles /Human/HumanConnectome/10unrelatedSubjects_preproc/$subject_dir/Diffusion_preproc/T1w/$dir_data1/diff_slices/data_slice_$slice/f1samples.nii.gz /Human/HumanConnectome/10unrelatedSubjects_preproc/$subject_dir/Diffusion_preproc/T1w/$dir_data2/diff_slices/data_slice_$slice/f1samples.nii.gz
+echo "f2samples.nii.gz :"
+/NIRAL/work/danaele/ExercicesTuto/CTest-exercices/CompareFiles-build/CompareFiles /Human/HumanConnectome/10unrelatedSubjects_preproc/$subject_dir/Diffusion_preproc/T1w/$dir_data1/diff_slices/data_slice_$slice/f2samples.nii.gz /Human/HumanConnectome/10unrelatedSubjects_preproc/$subject_dir/Diffusion_preproc/T1w/$dir_data2/diff_slices/data_slice_$slice/f2samples.nii.gz
+
+echo "mean_dsamples.nii.gz :"
+/NIRAL/work/danaele/ExercicesTuto/CTest-exercices/CompareFiles-build/CompareFiles /Human/HumanConnectome/10unrelatedSubjects_preproc/$subject_dir/Diffusion_preproc/T1w/$dir_data1/diff_slices/data_slice_$slice/mean_dsamples.nii.gz /Human/HumanConnectome/10unrelatedSubjects_preproc/$subject_dir/Diffusion_preproc/T1w/$dir_data2/diff_slices/data_slice_$slice/mean_dsamples.nii.gz
+
+echo "mean_f1samples.nii.gz :"
+/NIRAL/work/danaele/ExercicesTuto/CTest-exercices/CompareFiles-build/CompareFiles /Human/HumanConnectome/10unrelatedSubjects_preproc/$subject_dir/Diffusion_preproc/T1w/$dir_data1/diff_slices/data_slice_$slice/mean_f1samples.nii.gz /Human/HumanConnectome/10unrelatedSubjects_preproc/$subject_dir/Diffusion_preproc/T1w/$dir_data2/diff_slices/data_slice_$slice/mean_f1samples.nii.gz
+
+echo "mean_f2samples.nii.gz :"
+/NIRAL/work/danaele/ExercicesTuto/CTest-exercices/CompareFiles-build/CompareFiles /Human/HumanConnectome/10unrelatedSubjects_preproc/$subject_dir/Diffusion_preproc/T1w/$dir_data1/diff_slices/data_slice_$slice/mean_f2samples.nii.gz /Human/HumanConnectome/10unrelatedSubjects_preproc/$subject_dir/Diffusion_preproc/T1w/$dir_data2/diff_slices/data_slice_$slice/mean_f2samples.nii.gz
+
+echo "mean_S0samples.nii.gz :"
+/NIRAL/work/danaele/ExercicesTuto/CTest-exercices/CompareFiles-build/CompareFiles /Human/HumanConnectome/10unrelatedSubjects_preproc/$subject_dir/Diffusion_preproc/T1w/$dir_data1/diff_slices/data_slice_$slice/mean_S0samples.nii.gz /Human/HumanConnectome/10unrelatedSubjects_preproc/$subject_dir/Diffusion_preproc/T1w/$dir_data2/diff_slices/data_slice_$slice/mean_S0samples.nii.gz
+
+echo "ph1samples.nii.gz :"
+/NIRAL/work/danaele/ExercicesTuto/CTest-exercices/CompareFiles-build/CompareFiles /Human/HumanConnectome/10unrelatedSubjects_preproc/$subject_dir/Diffusion_preproc/T1w/$dir_data1/diff_slices/data_slice_$slice/ph1samples.nii.gz /Human/HumanConnectome/10unrelatedSubjects_preproc/$subject_dir/Diffusion_preproc/T1w/$dir_data2/diff_slices/data_slice_$slice/ph1samples.nii.gz
+
+echo "ph2samples.nii.gz :"
+/NIRAL/work/danaele/ExercicesTuto/CTest-exercices/CompareFiles-build/CompareFiles /Human/HumanConnectome/10unrelatedSubjects_preproc/$subject_dir/Diffusion_preproc/T1w/$dir_data1/diff_slices/data_slice_$slice/ph2samples.nii.gz /Human/HumanConnectome/10unrelatedSubjects_preproc/$subject_dir/Diffusion_preproc/T1w/$dir_data2/diff_slices/data_slice_$slice/ph2samples.nii.gz
+
+echo "th1samples.nii.gz :"
+/NIRAL/work/danaele/ExercicesTuto/CTest-exercices/CompareFiles-build/CompareFiles /Human/HumanConnectome/10unrelatedSubjects_preproc/$subject_dir/Diffusion_preproc/T1w/$dir_data1/diff_slices/data_slice_$slice/th1samples.nii.gz /Human/HumanConnectome/10unrelatedSubjects_preproc/$subject_dir/Diffusion_preproc/T1w/$dir_data2/diff_slices/data_slice_$slice/th1samples.nii.gz
+
+echo "th2samples.nii.gz :"
+/NIRAL/work/danaele/ExercicesTuto/CTest-exercices/CompareFiles-build/CompareFiles /Human/HumanConnectome/10unrelatedSubjects_preproc/$subject_dir/Diffusion_preproc/T1w/$dir_data1/diff_slices/data_slice_$slice/th2samples.nii.gz /Human/HumanConnectome/10unrelatedSubjects_preproc/$subject_dir/Diffusion_preproc/T1w/$dir_data2/diff_slices/data_slice_$slice/th2samples.nii.gz
+
